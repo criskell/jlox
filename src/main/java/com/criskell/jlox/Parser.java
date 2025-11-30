@@ -137,6 +137,14 @@ public class Parser {
 
     // Translates `equality -> comparison ( ( "!=" | "==" ) comparison )* ;`.
     private Expr equality() {
+        if (match(BANG_EQUAL, EQUAL_EQUAL)) {
+            Token operator = previous();
+            Expr right = comparison();
+
+            error(operator, "Binary operator '" + operator.lexeme + "' missing left-hand operand.");
+            return right;
+        }
+
         // We obtain the first left operand.
         Expr expr = comparison();
 
@@ -160,6 +168,14 @@ public class Parser {
 
     // Translates `comparison -> term ( ( ">" | ">=" | "<" | "<=" ) term )* ;`.
     private Expr comparison() {
+        if (match(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL)) {
+            Token operator = previous();
+            Expr right = term();
+            
+            error(operator, "Binary operator '" + operator.lexeme + "' missing left-hand operand.");
+            return right;
+        }
+
         Expr expr = term();
 
         while (match(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL)) {
@@ -174,6 +190,19 @@ public class Parser {
 
     // Left-associative
     private Expr term() {
+        if (match(MINUS, PLUS)) {
+            Token operator = previous();
+            Expr right = factor();
+
+            if (operator.type == PLUS) {
+                error(operator, "Binary operator '+' missing left-hand operand.");
+            } else {
+                return new Expr.Unary(operator, right);
+            }
+            
+            return right;
+        }
+
         Expr expr = factor();
 
         while (match(MINUS, PLUS)) {
@@ -187,6 +216,14 @@ public class Parser {
     }
 
     private Expr factor() {
+        if (match(SLASH, STAR)) {
+            Token operator = previous();
+            Expr right = unary();
+
+            error(operator, "Binary operator '" + operator.lexeme + "' missing left-hand operand.");
+            return right;
+        }
+
         Expr expr = unary();
 
         while (match(SLASH, STAR)) {
