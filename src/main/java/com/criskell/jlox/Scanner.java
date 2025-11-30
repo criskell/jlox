@@ -71,6 +71,10 @@ public class Scanner {
                 addToken(TokenType.PLUS);
             case ';' ->
                 addToken(TokenType.SEMICOLON);
+            case ':' ->
+                addToken(TokenType.COLON);
+            case '?' ->
+                addToken(TokenType.QUESTION);
             case '*' ->
                 addToken(TokenType.STAR);
             case '!' ->

@@ -13,6 +13,8 @@ enum TokenType {
     SEMICOLON,
     SLASH,
     STAR,
+    QUESTION,
+    COLON,
     // Tokens com um ou mais caracteres.
     BANG,
     BANG_EQUAL,
