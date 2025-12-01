@@ -7,6 +7,8 @@ public class Environment {
     private Environment enclosing;
     private final Map<String, Object> values = new HashMap<>();
 
+    public static final Object HOLE = new Object();
+
     Environment() {
         enclosing = null;
     }
@@ -17,7 +19,11 @@ public class Environment {
 
     public Object get(Token name) {
         if (values.containsKey(name.lexeme)) {
-            return values.get(name.lexeme);
+            Object value = values.get(name.lexeme);
+
+            if (value == HOLE) {
+                throw new RuntimeError(name, "Variable '" + name.lexeme + "' is not initialized.");
+            }
         }
 
         if (enclosing != null) return enclosing.get(name);
