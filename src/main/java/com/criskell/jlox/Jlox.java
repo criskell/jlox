@@ -55,6 +55,10 @@ public class Jlox {
                 break;
             }
 
+            if (!line.trim().endsWith(";")) {
+                line = "print " + line + ';';
+            }
+
             run(line);
             hadError = false;
         }

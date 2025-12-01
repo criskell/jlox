@@ -21,7 +21,7 @@ public class Parser {
     }
 
     // Translates `program -> statement* EOF;` into recursive descent style 
-    List<Stmt> parse() {
+    public List<Stmt> parse() {
         List<Stmt> statements = new ArrayList<>();
 
         while (!isAtEnd()) {
