@@ -1,5 +1,6 @@
 package com.criskell.jlox;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.criskell.jlox.Expr.Ternary;
@@ -264,6 +265,30 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         }
 
         return null;
+    }
+
+    @Override
+    public Object visitCallExpr(Expr.Call expr) {
+        Object callee = evaluate(expr.callee);
+
+        List<Object> arguments = new ArrayList<>();
+
+        // Called "enhanced for" in Java.
+        for (Expr argument : expr.arguments) {
+            arguments.add(evaluate(argument));
+        }
+
+        if (!(callee instanceof LoxCallable)) {
+            throw new RuntimeError(expr.paren, "Can only call functions and classes.");
+        }
+
+        LoxCallable function = (LoxCallable)callee;
+
+        if (arguments.size() != function.arity()) {
+            throw new RuntimeError(expr.paren, "Expected " + function.arity() + " arguments but got " + arguments.size() + ".");
+        }
+
+        return function.call(this, arguments);
     }
 
     @Override
