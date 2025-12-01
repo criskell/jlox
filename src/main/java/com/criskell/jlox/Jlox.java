@@ -73,6 +73,12 @@ public class Jlox {
         // There was a syntax error?
         if (hadError) return;
 
+        Resolver resolver = new Resolver(interpreter);
+        resolver.resolve(statements);
+
+        // In the case of an error we encountered during the resolution pass in semantic analysis.
+        if (hadError) return;
+
         interpreter.interpret(statements);
     }
 
