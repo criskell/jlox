@@ -1,0 +1,12 @@
+var i = 0;
+
+while (i < 10) {
+  while (true) {
+    print 1;
+    break;
+  }
+
+  print i;
+
+  i = i + 1;
+}

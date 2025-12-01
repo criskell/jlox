@@ -35,6 +35,7 @@ enum TokenType {
     FALSE,
     FUN,
     FOR,
+    BREAK,
     IF,
     NIL,
     OR,
