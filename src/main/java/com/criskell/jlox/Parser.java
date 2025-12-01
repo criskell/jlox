@@ -254,7 +254,7 @@ public class Parser {
 
     private Stmt declaration() {
         try {
-            if (match(FUN)) return function("function");
+            if (match(FUN) && !check(LEFT_PAREN)) return function("function");
             if (match(VAR)) return varDeclaration();
 
             return statement();
@@ -515,7 +515,7 @@ public class Parser {
     }
 
     private Expr primary() {
-        if (match(FUN)) return anonymousFunction();
+        if (match(FUN) || previous().type == TokenType.FUN) return anonymousFunction();
         if (match(FALSE)) return new Expr.Literal(false);
         if (match(TRUE)) return new Expr.Literal(true);
         if (match(NIL)) return new Expr.Literal(null);
