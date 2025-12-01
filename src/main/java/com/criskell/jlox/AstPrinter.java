@@ -1,6 +1,7 @@
 package com.criskell.jlox;
 
 import com.criskell.jlox.Expr.Assign;
+import com.criskell.jlox.Expr.Logical;
 import com.criskell.jlox.Expr.Ternary;
 import com.criskell.jlox.Expr.Variable;
 
@@ -42,6 +43,12 @@ public class AstPrinter implements Expr.Visitor<String> {
 
     @Override
     public String visitAssignExpr(Assign expr) {
+        // TODO
+        return null;
+    }
+
+    @Override
+    public String visitLogicalExpr(Logical expr) {
         // TODO
         return null;
     }
