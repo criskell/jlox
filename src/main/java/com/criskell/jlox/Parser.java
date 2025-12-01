@@ -1,5 +1,6 @@
 package com.criskell.jlox;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -19,14 +20,41 @@ public class Parser {
         this.tokens = tokens;
     }
 
-    Expr parse() {
-        try {
-            return expression();
-        } catch (ParseError e) {
-            // Error recovery is the responsibility of the parser, therefore we return null and prevent the exception
-            // from rising up the stack.
-            return null;
-        } 
+    // Translates `program -> statement* EOF;` into recursive descent style 
+    List<Stmt> parse() {
+        // try {
+        //     return expression();
+        // } catch (ParseError e) {
+        //     // Error recovery is the responsibility of the parser, therefore we return null and prevent the exception
+        //     // from rising up the stack.
+        //     return null;
+        // } 
+
+        List<Stmt> statements = new ArrayList<>();
+
+        while (!isAtEnd()) {
+            statements.add(statement());
+        }
+
+        return statements;
+    }
+
+    private Stmt statement() {
+        if (match(PRINT)) return printStatement();
+
+        return expressionStatement();
+    }
+
+    private Stmt printStatement() {
+        Expr value = expression();
+        consume(SEMICOLON, "Expect ';' after value.");
+        return new Stmt.Print(value);
+    }
+
+    private Stmt expressionStatement() {
+        Expr expr = expression();
+        consume(SEMICOLON, "Expect ';' after expression.");
+        return new Stmt.Expression(expr);
     }
 
     private Expr expression() {
