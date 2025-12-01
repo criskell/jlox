@@ -24,6 +24,8 @@ public class Environment {
             if (value == HOLE) {
                 throw new RuntimeError(name, "Variable '" + name.lexeme + "' is not initialized.");
             }
+
+            return value;
         }
 
         if (enclosing != null) return enclosing.get(name);
