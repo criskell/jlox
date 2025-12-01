@@ -1,0 +1,19 @@
+var Z = fun (f) {
+  return fun (x) {
+    return f(fun (v) { return x(x)(v); });
+  } (
+    fun (x) {
+      return f(fun (v) { return x(x)(v); });
+    }
+  );
+};
+
+var factorial = Z(fun (rec) {
+  return fun (n) {
+    if (n <= 1) return 1;
+
+    return n * rec(n - 1);
+  };
+});
+
+print factorial(5);
