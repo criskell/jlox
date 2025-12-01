@@ -515,6 +515,7 @@ public class Parser {
     }
 
     private Expr primary() {
+        if (match(FUN)) return anonymousFunction();
         if (match(FALSE)) return new Expr.Literal(false);
         if (match(TRUE)) return new Expr.Literal(true);
         if (match(NIL)) return new Expr.Literal(null);
@@ -535,6 +536,23 @@ public class Parser {
 
         // We are dealing with a token that cannot begin an expression.
         throw error(peek(), "Expect expression.");
+    }
+
+    private Expr anonymousFunction() {
+        consume(LEFT_PAREN, "Expect '(' after 'fun'.");
+
+        List<Token> parameters = new ArrayList<>();
+        if (!check(RIGHT_PAREN)) {
+            do {
+                parameters.add(consume(IDENTIFIER, "Expect parameter name."));
+            } while (match(COMMA));
+        }
+        consume(RIGHT_PAREN, "Expect ')' after parameters.");
+
+        consume(LEFT_BRACE, "Expect '{' before function body.");
+        List<Stmt> block = block();
+
+        return new Expr.AnonymousFunction(parameters, block);
     }
 
     // Supplier is a Java functional interface that represents a function that does not

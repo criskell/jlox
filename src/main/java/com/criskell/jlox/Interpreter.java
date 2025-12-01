@@ -3,6 +3,7 @@ package com.criskell.jlox;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.criskell.jlox.Expr.AnonymousFunction;
 import com.criskell.jlox.Expr.Ternary;
 import com.criskell.jlox.Stmt.Function;
 
@@ -167,6 +168,12 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         LoxFunction function = new LoxFunction(stmt, environment);
         environment.define(stmt.name.lexeme, function);
         return null;
+    }
+
+    @Override
+    public Object visitAnonymousFunctionExpr(Expr.AnonymousFunction expr) {
+        LoxFunction function = new LoxFunction(expr.params, expr.body, environment); 
+        return function;
     }
 
     @Override

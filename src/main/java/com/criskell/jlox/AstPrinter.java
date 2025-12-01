@@ -1,5 +1,6 @@
 package com.criskell.jlox;
 
+import com.criskell.jlox.Expr.AnonymousFunction;
 import com.criskell.jlox.Expr.Assign;
 import com.criskell.jlox.Expr.Call;
 import com.criskell.jlox.Expr.Logical;
@@ -56,6 +57,12 @@ public class AstPrinter implements Expr.Visitor<String> {
 
     @Override
     public String visitCallExpr(Call expr) {
+        // TODO
+        return null;
+    }
+
+    @Override
+    public String visitAnonymousFunctionExpr(AnonymousFunction expr) {
         // TODO
         return null;
     }
