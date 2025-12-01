@@ -1,0 +1,18 @@
+fun f() {
+  fun g(c) {
+    if (c == 51) {
+      return;
+    }
+
+    f();
+
+    print c;
+    g(c + 1);
+  }
+
+  return g;
+}
+
+var g = f();
+
+g(0);

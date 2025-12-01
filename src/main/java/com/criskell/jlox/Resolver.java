@@ -42,8 +42,8 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
         }
 
         resolve(body);
-
         endScope();
+
         currentFunction = enclosingFunction;
     }
 
@@ -220,7 +220,6 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
     @Override
     public Void visitAnonymousFunctionExpr(AnonymousFunction expr) {
         resolveFunction(expr.params, expr.body, FunctionType.FUNCTION);
-
         return null;
     }
 
