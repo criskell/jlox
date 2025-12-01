@@ -16,7 +16,7 @@ public class Jlox {
 
     public static void main(String[] args) throws IOException {
         if (args.length > 1) {
-            System.out.println("Utilização: jlox [script]");
+            System.out.println("Usage: jlox [script]");
             System.exit(64);
         }
 
