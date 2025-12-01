@@ -1,6 +1,8 @@
 package com.criskell.jlox;
 
+import com.criskell.jlox.Expr.Assign;
 import com.criskell.jlox.Expr.Ternary;
+import com.criskell.jlox.Expr.Variable;
 
 public class AstPrinter implements Expr.Visitor<String> {
     String print(Expr expr) {
@@ -31,6 +33,17 @@ public class AstPrinter implements Expr.Visitor<String> {
     @Override
     public String visitTernaryExpr(Ternary expr) {
         return parenthesize("?:", expr.condition, expr.thenBranch, expr.elseBranch);
+    }
+
+    @Override
+    public String visitVariableExpr(Variable expr) {
+        return expr.name.lexeme;
+    }
+
+    @Override
+    public String visitAssignExpr(Assign expr) {
+        // TODO
+        return null;
     }
 
     private String parenthesize(String name, Expr... exprs) {
