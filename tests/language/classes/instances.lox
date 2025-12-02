@@ -1,0 +1,3 @@
+class Klass {}
+var instance = Klass();
+print instance;

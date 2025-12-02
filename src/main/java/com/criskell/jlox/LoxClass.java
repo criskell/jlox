@@ -1,7 +1,9 @@
 package com.criskell.jlox;
 
-public class LoxClass {
-    private final String name;
+import java.util.List;
+
+public class LoxClass implements LoxCallable {
+    public final String name;
 
     LoxClass(String name) {
         this.name = name;
@@ -11,4 +13,15 @@ public class LoxClass {
     public String toString() {
         return name;
     }
+
+    @Override
+    public Object call(Interpreter interpreter, List<Object> arguments) {
+        LoxInstance instance = new LoxInstance(this);
+        return instance;
+    }
+
+    @Override
+    public int arity() {
+        return 0;
+    }        
 }
