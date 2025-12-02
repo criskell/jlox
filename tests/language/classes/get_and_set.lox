@@ -1,0 +1,9 @@
+class Kell {
+  hello() {}
+}
+
+var instance = Kell();
+
+instance.oi = "tudo certo amigo?";
+
+print instance.oi;
