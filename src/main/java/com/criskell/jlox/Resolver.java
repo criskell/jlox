@@ -55,6 +55,9 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
         scopes.pop();
     }
 
+    /**
+     * Declares that the variable exists.
+     */
     private void declare(Token name) {
         if (scopes.isEmpty()) return;
 
@@ -67,6 +70,9 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
         scope.put(name.lexeme, false);
     }
 
+    /**
+     * It defines that the variable exists in the current scope.
+     */
     private void define(Token name) {
         if (scopes.isEmpty()) return;
 
@@ -87,6 +93,13 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
         beginScope();
         resolve(stmt.statements);
         endScope();
+        return null;
+    }
+
+    @Override
+    public Void visitClassStmt(Stmt.Class stmt) {
+        declare(stmt.name);
+        define(stmt.name);
         return null;
     }
 
