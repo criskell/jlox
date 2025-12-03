@@ -29,6 +29,13 @@ public class LoxFunction implements LoxCallable {
         this.params = params;
     }
 
+    LoxFunction bind(LoxInstance instance) {
+        Environment environment = new Environment(closure);
+        environment.define("this", instance);
+
+        return new LoxFunction(declaration, environment);
+    }
+
     @Override
     public int arity() {
         return params.size();
