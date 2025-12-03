@@ -1,0 +1,5 @@
+fun example() {
+  print this;
+}
+
+example();
