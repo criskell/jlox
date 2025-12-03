@@ -15,6 +15,7 @@ abstract class Stmt {
         R visitVarStmt(Var stmt);
         R visitWhileStmt(While stmt);
         R visitBreakStmt(Break stmt);
+        R visitTraitStmt(Trait stmt);
     }
     static class Block extends Stmt {
         Block(List<Stmt> statements) {
@@ -29,9 +30,10 @@ abstract class Stmt {
         final List<Stmt> statements;
     }
     static class Class extends Stmt {
-        Class(Token name, Expr.Variable superclass, List<Stmt.Function> methods) {
+        Class(Token name, Expr.Variable superclass, List<Expr> traits, List<Stmt.Function> methods) {
             this.name = name;
             this.superclass = superclass;
+            this.traits = traits;
             this.methods = methods;
         }
 
@@ -42,6 +44,7 @@ abstract class Stmt {
 
         final Token name;
         final Expr.Variable superclass;
+        final List<Expr> traits;
         final List<Stmt.Function> methods;
     }
     static class Expression extends Stmt {
@@ -151,6 +154,22 @@ abstract class Stmt {
             return visitor.visitBreakStmt(this);
         }
 
+    }
+    static class Trait extends Stmt {
+        Trait(Token name, List<Expr> traits, List<Stmt.Function> methods) {
+            this.name = name;
+            this.traits = traits;
+            this.methods = methods;
+        }
+
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+            return visitor.visitTraitStmt(this);
+        }
+
+        final Token name;
+        final List<Expr> traits;
+        final List<Stmt.Function> methods;
     }
 
     abstract <R> R accept(Visitor<R> visitor);

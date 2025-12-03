@@ -46,5 +46,7 @@ enum TokenType {
     TRUE,
     VAR,
     WHILE,
-    EOF
+    EOF,
+    TRAIT,
+    WITH,
 }

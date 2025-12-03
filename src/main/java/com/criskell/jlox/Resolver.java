@@ -29,7 +29,8 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
     private enum ClassType {
         NONE,
         CLASS,
-        SUBCLASS
+        SUBCLASS,
+        TRAIT
     }
 
     private ClassType currentClass = ClassType.NONE;
@@ -127,6 +128,10 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
             scopes.peek().put("super", true);
         }
 
+        for (Expr trait : stmt.traits) {
+            resolve(trait);
+        }
+
         beginScope();
         scopes.peek().put("this", true);
 
@@ -143,6 +148,33 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
         endScope();
 
         if (stmt.superclass != null) endScope();
+
+        currentClass = enclosingClass;
+        return null;
+    }
+
+    @Override
+    public Void visitTraitStmt(Stmt.Trait stmt) {
+        declare(stmt.name);
+        define(stmt.name);
+
+        ClassType enclosingClass = currentClass;
+        currentClass = ClassType.TRAIT;
+
+        for (Expr trait : stmt.traits) {
+            resolve(trait);
+        }
+
+        beginScope();
+        scopes.peek().put("this", true);
+
+        for (Stmt.Function method : stmt.methods) {
+            FunctionType declaration = FunctionType.METHOD;
+
+            resolveFunction(method.params, method.body, declaration);
+        }
+
+        endScope();
 
         currentClass = enclosingClass;
         return null;
@@ -282,6 +314,8 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
             Jlox.error(expr.keyword, "Can't use 'super' outside of a class.");
         } else if (currentClass != ClassType.SUBCLASS) {
             Jlox.error(expr.keyword, "Can't use 'super' in a class with no superclass.");
+        } else if (currentClass != ClassType.TRAIT) {
+            Jlox.error(expr.keyword, "Can't use 'super' in a trait.");
         }
 
         // We store the number of hops required for the interpreter to find the environment where the superclass was defined.
