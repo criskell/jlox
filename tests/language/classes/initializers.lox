@@ -1,0 +1,22 @@
+class Application {
+  init(name) {
+    print "Initializing object...";
+    if (name == "lucas") {
+      this.name = "criskell";
+    } else {
+      this.name = name;
+    }
+    print this.name;
+    print this;
+  }
+
+  sayName() {
+    print this.name;
+  }
+}
+
+var app1 = Application("lucas");
+app1.sayName();
+
+var app2 = Application("Maria");
+app2.sayName();
