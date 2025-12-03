@@ -1,0 +1,12 @@
+class Foo {
+  init() {
+    this.x = "hello criskell";
+
+    return;
+  }
+}
+
+var foo = Foo();
+
+print foo.x;
+print foo.init().x;
