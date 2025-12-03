@@ -1,0 +1,9 @@
+class Application {
+  run() {
+    print "Running application...";
+  }
+}
+
+var app = Application();
+
+app.run();

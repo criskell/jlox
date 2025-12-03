@@ -12,11 +12,15 @@ public class LoxInstance {
     }
 
     public Object get(Token property) {
-        if (!fields.containsKey(property.lexeme)) {
-            throw new RuntimeError(property, "Undefined property '" + property.lexeme + "'");
+        if (fields.containsKey(property.lexeme)) {
+            return fields.get(property.lexeme);
         }
 
-        return fields.get(property.lexeme);
+        LoxFunction method = klass.findMethod(property.lexeme);
+
+        if (method != null) return method;
+        
+        throw new RuntimeError(property, "Undefined property '" + property.lexeme + "'");
     }
 
     public void set(Token name, Object value) {
